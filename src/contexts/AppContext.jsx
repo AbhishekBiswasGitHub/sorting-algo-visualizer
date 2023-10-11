@@ -21,6 +21,7 @@ import createRender from "../utils/createRender";
 
 // algorithms
 import algorithms from "../algorithms/algorithms";
+import generateAuxiliaryArray from "../algorithms/auxiliaryArray";
 
 // context
 export const AppContext = createContext();
@@ -64,8 +65,15 @@ const AppContextProvider = ({ children }) => {
   const [isSorted, setIsSorted] = useState(false);
   const [unsortedPrimary, setUnsortedPrimary] =
     useState([]);
+  const [
+    unsortedAuxiliary,
+    setUnsortedAuxiliary,
+  ] = useState([]);
   const [sortedPrimary, setSortedPrimary] =
     useState([]);
+  const [sortedAuxiliary, setSortedAuxiliary] =
+    useState([]);
+
   const [renders, setRenders] = useState([]);
   const [renderIndex, setRenderIndex] =
     useState(0);
@@ -173,14 +181,44 @@ const AppContextProvider = ({ children }) => {
     setSortedPrimary(() => [...unsortedPrimary]);
   };
 
+  // generate unsorted auxiliary array
+  const generateUnsortedAuxiliary = () => {
+    setUnsortedAuxiliary(() =>
+      generateAuxiliaryArray(unsortedPrimary)[
+        algorithm
+      ]()
+    );
+  };
+
+  // reset sorted auxiliary array to unsorted auxiliary array
+  const resetSortedAuxiliary = () => {
+    setSortedAuxiliary(() => [
+      ...unsortedAuxiliary,
+    ]);
+  };
+
   // generate renders array
   const generateRenders = () => {
     setRenders(() =>
       algorithms[algorithm](
         unsortedPrimary,
-        createRender(setSortedPrimary)
+        createRender(setSortedPrimary),
+        createRender(setSortedAuxiliary)
       )
     );
+  };
+
+  // reset flags, sorted primary array, sorted auxiliary array
+  const reset = () => {
+    resetFlags();
+    resetSortedPrimary();
+    resetSortedAuxiliary();
+  };
+
+  // generate unsorted primary array, renders array
+  const shuffle = () => {
+    resetFlags();
+    generateUnsortedPrimary();
   };
 
   // start sorting if not, pause if sorting
@@ -200,18 +238,6 @@ const AppContextProvider = ({ children }) => {
     }
   };
 
-  // reset flags, sorted primary array
-  const reset = () => {
-    resetFlags();
-    resetSortedPrimary();
-  };
-
-  // generate unsorted primary array, renders array
-  const shuffle = () => {
-    resetFlags();
-    generateUnsortedPrimary();
-  };
-
   // generate current progress percentage
   const generateProgress = () => {
     setProgress(
@@ -224,25 +250,33 @@ const AppContextProvider = ({ children }) => {
     );
   };
 
-  // update sorted primary array &
-  // generate renders array
+  // generate unsorted auxiliary array, renders array &
+  // reset sorted primary array
   // when unsorted primary array changes
   useEffect(() => {
-    resetSortedPrimary();
+    generateUnsortedAuxiliary();
     generateRenders();
+    resetSortedPrimary();
   }, [unsortedPrimary]);
 
-  // reset flags, sorted primary array and
-  // generate renders array
+  // reset sorted auxiliary array
+  // when unsorted auxiliary array changes
+  useEffect(() => {
+    resetSortedAuxiliary();
+  }, [unsortedAuxiliary]);
+
+  // reset flags, sorted primary array &
+  // generate unsorted auxiliary array, renders array
   // when algorithm changes
   useEffect(() => {
     resetFlags();
+    generateUnsortedAuxiliary();
     resetSortedPrimary();
     generateRenders();
   }, [algorithm]);
 
   // generate unsorted primary array
-  // when length / min / max changes
+  // when length or min or max changes
   useEffect(() => {
     shuffle();
   }, [length, min, max]);
@@ -259,6 +293,7 @@ const AppContextProvider = ({ children }) => {
             setIsSorted(() => false);
             setProgress(() => 0);
             resetSortedPrimary();
+            resetSortedAuxiliary();
 
             await new Promise((promise) =>
               setTimeout(promise, 1)
@@ -330,6 +365,7 @@ const AppContextProvider = ({ children }) => {
           value: {
             isRendering,
             sortedPrimary,
+            sortedAuxiliary,
             progress,
           },
           handler: {

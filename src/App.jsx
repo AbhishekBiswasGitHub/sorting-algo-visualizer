@@ -6,6 +6,7 @@ import ColorCodeInfo from "./components/ColorCodeInfo";
 import Title from "./components/Title";
 import Settings from "./components/Settings";
 import ArrayViz from "./components/ArrayViz";
+import AuxiliaryArray from "./components/AuxiliaryArray";
 import ProgressBar from "./components/ProgressBar";
 import Controls from "./components/Controls";
 
@@ -28,6 +29,7 @@ const App = () => {
         max={max}
         array={sortedPrimary}
       />
+      <AuxiliaryArray />
       <ProgressBar progress={progress} />
       <Controls />
     </div>
