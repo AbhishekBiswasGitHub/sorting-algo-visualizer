@@ -4,8 +4,9 @@ import { AppContext } from "./contexts/AppContext";
 
 import ColorCodeInfo from "./components/ColorCodeInfo";
 import Settings from "./components/Settings";
-import Controls from "./components/Controls";
 import ArrayViz from "./components/ArrayViz";
+import ProgressBar from "./components/ProgressBar";
+import Controls from "./components/Controls";
 
 import "./App.css";
 
@@ -24,6 +25,7 @@ const App = () => {
         max={max}
         array={sortedPrimary}
       />
+      <ProgressBar progress={50} />
       <Controls />
     </div>
   );
