@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { AppContext } from "./contexts/AppContext";
 
 import ColorCodeInfo from "./components/ColorCodeInfo";
+import Title from "./components/Title";
 import Settings from "./components/Settings";
 import ArrayViz from "./components/ArrayViz";
 import ProgressBar from "./components/ProgressBar";
@@ -20,6 +21,7 @@ const App = () => {
     <div id="App">
       <ColorCodeInfo />
       <Settings />
+      <Title />
       <ArrayViz
         min={min}
         max={max}
