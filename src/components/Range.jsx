@@ -18,10 +18,20 @@ const Range = ({
 
   return (
     <div className={styles.container}>
-      <span className={styles.title}>
-        <i className={`fa-solid fa-${icon}`}></i>
-        {title}
-      </span>
+      {title ? (
+        <span className={styles.title}>
+          {icon ? (
+            <i
+              className={`fa-solid fa-${icon}`}
+            ></i>
+          ) : (
+            <></>
+          )}
+          {title}
+        </span>
+      ) : (
+        <></>
+      )}
       <div className={styles.display}>
         <span
           className={`${styles.button} ${styles.decrement}`}

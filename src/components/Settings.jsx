@@ -1,6 +1,6 @@
 import { useContext } from "react";
 
-import ALGORITHM from "../data/algorithm";
+// import ALGORITHM from "../data/algorithm";
 import SPEED from "../data/speed";
 import LENGTH from "../data/length";
 import MIN from "../data/min";
@@ -27,13 +27,13 @@ const Settings = () => {
       }
     >
       <div className={styles.settings}>
-        <Range
+        {/* <Range
           title="algorithm"
           icon="microchip"
           values={ALGORITHM}
           index={index.algorithm}
           setIndex={indexHandler.algorithm}
-        />
+        /> */}
         <Range
           title="speed"
           icon="gauge-simple-high"

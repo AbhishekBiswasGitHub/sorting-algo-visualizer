@@ -269,10 +269,17 @@ const AppContextProvider = ({ children }) => {
   // generate unsorted auxiliary array, renders array
   // when algorithm changes
   useEffect(() => {
-    resetFlags();
-    generateUnsortedAuxiliary();
-    resetSortedPrimary();
-    generateRenders();
+    (async () => {
+      resetFlags();
+      generateUnsortedAuxiliary();
+      generateRenders();
+
+      await new Promise((promise) =>
+        setTimeout(promise, 1)
+      );
+
+      resetSortedPrimary();
+    })();
   }, [algorithm]);
 
   // generate unsorted primary array

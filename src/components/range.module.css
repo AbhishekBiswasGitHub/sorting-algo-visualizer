@@ -57,21 +57,17 @@
 @media screen and (max-height: 400px) {
   .container {
     padding: 0.5rem 2rem;
-
-    border-radius: 1rem;
   }
 
   .button {
-    font-size: 1.5rem;
+    font-size: 2rem;
   }
 
   .title {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
   }
 
   .value {
-    width: 20rem;
-
-    font-size: 1.5rem;
+    font-size: 1.8rem;
   }
 }
