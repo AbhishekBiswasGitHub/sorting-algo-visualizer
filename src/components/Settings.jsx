@@ -13,11 +13,18 @@ import styles from "./settings.module.css";
 
 const Settings = () => {
   const {
-    settings: { index, indexHandler },
+    settings: { index, indexHandler, value },
   } = useContext(AppContext);
 
   return (
-    <div className={styles.container}>
+    <div
+      className={styles.container}
+      style={
+        value.showSettings
+          ? { display: "flex" }
+          : {}
+      }
+    >
       <div className={styles.settings}>
         <Range
           title="algorithm"

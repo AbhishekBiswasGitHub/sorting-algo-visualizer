@@ -37,6 +37,9 @@ const AppContextProvider = ({ children }) => {
     MAX[maxIndex].value
   );
 
+  const [showSettings, setShowSettings] =
+    useState(false);
+
   // settings handlers
 
   // TODO: set algorithm index if in range
@@ -75,6 +78,13 @@ const AppContextProvider = ({ children }) => {
     ) {
       setMaxIndex(() => index);
     }
+  };
+
+  // toggle settings display
+  const toggleShowSettings = () => {
+    setShowSettings(
+      (prevShowSettings) => !prevShowSettings
+    );
   };
 
   // TODO: set algorithm when algorithm index changes
@@ -123,6 +133,10 @@ const AppContextProvider = ({ children }) => {
             length,
             min,
             max,
+            showSettings,
+          },
+          handler: {
+            toggleShowSettings,
           },
         },
       }}
