@@ -1,12 +1,14 @@
+import ColorCodeInfo from "./components/ColorCodeInfo";
 import Settings from "./components/Settings";
 import Controls from "./components/Controls";
+import ArrayViz from "./components/ArrayViz";
 
 import "./App.css";
-import ArrayViz from "./components/ArrayViz";
 
 const App = () => {
   return (
     <div id="App">
+      <ColorCodeInfo />
       <Settings />
       <ArrayViz
         min={-10}

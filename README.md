@@ -28,7 +28,7 @@ Explore and visualize various sorting algorithms interactively with this web-bas
 ### Interactive Controls
 
 - **Toggle FullScreen**: Expand or minimize the visualization area for a more immersive experience.
-- **Color Indicator Info**: Display a legend explaining the color codes used during visualization.
+- **Color Code Info**: Display a legend explaining the color codes used during visualization.
 - **Sort with Random Algorithm Continuously**: Watch as random sorting algorithms are applied continuously.
 - **Sort**: Manually trigger the selected sorting algorithm to see it in action.
 - **Reset**: Clear the visualization and reset the array to its initial state.
