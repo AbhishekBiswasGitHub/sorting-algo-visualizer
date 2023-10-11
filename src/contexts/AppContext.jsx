@@ -17,6 +17,10 @@ import MAX from "../data/max";
 
 // utils
 import generateUnsortedArray from "../utils/generateUnsortedArray";
+import createRender from "../utils/createRender";
+
+// algorithms
+import algorithms from "../algorithms/algorithms";
 
 // context
 export const AppContext = createContext();
@@ -54,10 +58,16 @@ const AppContextProvider = ({ children }) => {
     useState(false);
 
   // render states
+  const [isRendering, setIsRendering] =
+    useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   const [unsortedPrimary, setUnsortedPrimary] =
     useState([]);
   const [sortedPrimary, setSortedPrimary] =
     useState([]);
+  const [renders, setRenders] = useState([]);
+  const [renderIndex, setRenderIndex] =
+    useState(0);
 
   // settings handlers
 
@@ -140,6 +150,13 @@ const AppContextProvider = ({ children }) => {
 
   // render handlers
 
+  // reset rendering flags
+  const resetFlags = () => {
+    setIsRendering(() => false);
+    setIsPaused(() => false);
+    setRenderIndex(() => 0);
+  };
+
   // generate unsorted primary array
   const generateUnsortedPrimary = () => {
     setUnsortedPrimary(() =>
@@ -152,26 +169,58 @@ const AppContextProvider = ({ children }) => {
     setSortedPrimary(() => [...unsortedPrimary]);
   };
 
-  // reset sorted primary array
+  // generate renders array
+  const generateRenders = () => {
+    setRenders(() =>
+      algorithms[algorithm](
+        unsortedPrimary,
+        createRender(setSortedPrimary)
+      )
+    );
+  };
+
+  // start sorting if not, pause if sorting
+  const sort = () => {
+    if (!isRendering) {
+      if (!isPaused) {
+        setRenderIndex(() => 0);
+      }
+
+      setIsRendering(true);
+      setIsPaused(false);
+    } else {
+      setIsRendering(false);
+      setIsPaused(true);
+    }
+  };
+
+  // reset flags, sorted primary array
   const reset = () => {
+    resetFlags();
     resetSortedPrimary();
   };
 
-  // generate unsorted primary array
+  // generate unsorted primary array, renders array
   const shuffle = () => {
+    resetFlags();
     generateUnsortedPrimary();
   };
 
-  // update sorted primary array
+  // update sorted primary array &
+  // generate renders array
   // when unsorted primary array changes
   useEffect(() => {
     resetSortedPrimary();
+    generateRenders();
   }, [unsortedPrimary]);
 
-  // reset sorted primary array
+  // reset flags, sorted primary array and
+  // generate renders array
   // when algorithm changes
   useEffect(() => {
+    resetFlags();
     resetSortedPrimary();
+    generateRenders();
   }, [algorithm]);
 
   // generate unsorted primary array
@@ -179,6 +228,47 @@ const AppContextProvider = ({ children }) => {
   useEffect(() => {
     shuffle();
   }, [length, min, max]);
+
+  // render changes
+  // if rendering flag is on
+  // when rendering flag changes or rendering index count changes
+  useEffect(() => {
+    (async () => {
+      if (isRendering) {
+        await (async () => {
+          if (renderIndex === 0) {
+            setIsPaused(() => false);
+            resetSortedPrimary();
+
+            await new Promise((promise) =>
+              setTimeout(promise, 1)
+            );
+          }
+        })();
+
+        renders[renderIndex]();
+
+        await new Promise((promise) =>
+          setTimeout(
+            promise,
+            renderIndex < renders.length - 6
+              ? speed
+              : 500
+          )
+        );
+
+        if (renderIndex + 1 < renders.length) {
+          setRenderIndex(
+            (prevRenderIndex) =>
+              prevRenderIndex + 1
+          );
+        } else {
+          setIsRendering(false);
+          setRenderIndex(0);
+        }
+      }
+    })();
+  }, [isRendering, renderIndex]);
 
   return (
     <AppContext.Provider
@@ -212,11 +302,13 @@ const AppContextProvider = ({ children }) => {
         },
         render: {
           value: {
+            isRendering,
             sortedPrimary,
           },
           handler: {
             reset,
             shuffle,
+            sort,
           },
         },
       }}

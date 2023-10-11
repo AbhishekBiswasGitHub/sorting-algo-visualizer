@@ -10,7 +10,8 @@ const Controls = () => {
       handler: { toggleShowSettings },
     },
     render: {
-      handler: { reset, shuffle },
+      value: { isRendering },
+      handler: { reset, shuffle, sort },
     },
   } = useContext(AppContext);
 
@@ -27,10 +28,16 @@ const Controls = () => {
       <div className={styles.controls}>
         <div
           className={styles.button}
-          title="Sort"
-          onClick={() => {}}
+          title={isRendering ? "Pause" : "Sort"}
+          onClick={sort}
         >
-          <i className="fa-solid fa-arrow-up-wide-short"></i>
+          <i
+            className={`fa-solid fa-${
+              isRendering
+                ? "pause"
+                : "arrow-up-wide-short"
+            }`}
+          ></i>
         </div>
         <div
           className={styles.button}
