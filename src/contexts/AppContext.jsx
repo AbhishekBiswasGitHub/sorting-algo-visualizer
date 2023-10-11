@@ -136,8 +136,17 @@ const AppContextProvider = ({ children }) => {
     setSortedPrimary(() => [...unsortedPrimary]);
   };
 
-  // reset flags and
-  // generate unsorted primary array, unsorted auxiliary array, renders array
+  // reset sorted primary array
+  const reset = () => {
+    resetSortedPrimary();
+  };
+
+  // generate unsorted primary array, renders array
+  const shuffle = () => {
+    generateUnsortedPrimary();
+  };
+
+  // generate unsorted primary array
   // when length / min / max changes
   useEffect(() => {
     generateUnsortedPrimary();
@@ -182,6 +191,10 @@ const AppContextProvider = ({ children }) => {
         render: {
           value: {
             sortedPrimary,
+          },
+          handler: {
+            reset,
+            shuffle,
           },
         },
       }}

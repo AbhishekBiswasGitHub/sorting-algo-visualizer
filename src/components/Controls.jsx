@@ -6,7 +6,12 @@ import styles from "./controls.module.css";
 
 const Controls = () => {
   const {
-    settings: { handler },
+    settings: {
+      handler: { toggleShowSettings },
+    },
+    render: {
+      handler: { reset, shuffle },
+    },
   } = useContext(AppContext);
 
   return (
@@ -14,7 +19,7 @@ const Controls = () => {
       <div
         className={styles.button}
         title="Settings"
-        onClick={handler.toggleShowSettings}
+        onClick={toggleShowSettings}
         style={{ marginLeft: 0 }}
       >
         <i className="fa-solid fa-gears"></i>
@@ -30,14 +35,14 @@ const Controls = () => {
         <div
           className={styles.button}
           title="Reset"
-          onClick={() => {}}
+          onClick={reset}
         >
           <i className="fa-solid fa-rotate-left"></i>
         </div>
         <div
           className={styles.button}
           title="Shuffle"
-          onClick={() => {}}
+          onClick={shuffle}
         >
           <i className="fa-solid fa-shuffle"></i>
         </div>
