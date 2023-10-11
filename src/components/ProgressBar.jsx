@@ -1,9 +1,11 @@
+import { useContext } from "react";
+
 import STATUS from "../data/status";
 const { UNSORTED, SORTED } = STATUS;
 
-import styles from "./progress-bar.module.css";
-import { useContext } from "react";
 import { AppContext } from "../contexts/AppContext";
+
+import styles from "./progress-bar.module.css";
 
 const ProgressBar = () => {
   const {
