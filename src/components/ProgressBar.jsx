@@ -1,11 +1,16 @@
-import PropTypes from "prop-types";
-
 import STATUS from "../data/status";
 const { UNSORTED, SORTED } = STATUS;
 
 import styles from "./progress-bar.module.css";
+import { useContext } from "react";
+import { AppContext } from "../contexts/AppContext";
 
-const ProgressBar = ({ progress }) => {
+const ProgressBar = () => {
+  const {
+    render: {
+      value: { progress },
+    },
+  } = useContext(AppContext);
   return (
     <div
       className={styles.container}
@@ -20,10 +25,6 @@ const ProgressBar = ({ progress }) => {
       ></div>
     </div>
   );
-};
-
-ProgressBar.propTypes = {
-  progress: PropTypes.any.isRequired,
 };
 
 export default ProgressBar;
