@@ -1,3 +1,5 @@
+/*eslint-disable react-hooks/exhaustive-deps */
+
 // libraries
 import {
   createContext,
@@ -12,11 +14,16 @@ import LENGTH from "../data/length";
 import MIN from "../data/min";
 import MAX from "../data/max";
 
+// utils
+import generateUnsortedArray from "../utils/generateUnsortedArray";
+
 // context
 export const AppContext = createContext();
 
 // context provider
 const AppContextProvider = ({ children }) => {
+  // states
+
   // settings states
   const [speedIndex, setSpeedIndex] = useState(3);
   const [lengthIndex, setLengthIndex] =
@@ -39,6 +46,12 @@ const AppContextProvider = ({ children }) => {
 
   const [showSettings, setShowSettings] =
     useState(false);
+
+  // render states
+  const [unsortedPrimary, setUnsortedPrimary] =
+    useState([]);
+  const [sortedPrimary, setSortedPrimary] =
+    useState([]);
 
   // settings handlers
 
@@ -109,6 +122,33 @@ const AppContextProvider = ({ children }) => {
     setMax(() => MAX[maxIndex].value);
   }, [maxIndex]);
 
+  // render handlers
+
+  // generate unsorted primary array
+  const generateUnsortedPrimary = () => {
+    setUnsortedPrimary(() =>
+      generateUnsortedArray(length, min, max)
+    );
+  };
+
+  // reset sorted primary array to unsorted primary array
+  const resetSortedPrimary = () => {
+    setSortedPrimary(() => [...unsortedPrimary]);
+  };
+
+  // reset flags and
+  // generate unsorted primary array, unsorted auxiliary array, renders array
+  // when length / min / max changes
+  useEffect(() => {
+    generateUnsortedPrimary();
+  }, [length, min, max]);
+
+  // update sorted primary array
+  // when unsorted primary array changes
+  useEffect(() => {
+    resetSortedPrimary();
+  }, [unsortedPrimary]);
+
   return (
     <AppContext.Provider
       value={{
@@ -137,6 +177,11 @@ const AppContextProvider = ({ children }) => {
           },
           handler: {
             toggleShowSettings,
+          },
+        },
+        render: {
+          value: {
+            sortedPrimary,
           },
         },
       }}
