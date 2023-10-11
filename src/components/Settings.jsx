@@ -1,3 +1,8 @@
+import SPEED from "../data/speed";
+import LENGTH from "../data/length";
+import MIN from "../data/min";
+import MAX from "../data/max";
+
 import Range from "./Range";
 
 import styles from "./settings.module.css";
@@ -16,28 +21,28 @@ const Settings = () => {
         <Range
           title="speed"
           icon="gauge-simple-high"
-          values={[{ title: "normal" }]}
+          values={SPEED}
           index={0}
           setIndex={() => {}}
         />
         <Range
           title="number of elements"
           icon="bars"
-          values={[{ title: "50" }]}
+          values={LENGTH}
           index={0}
           setIndex={() => {}}
         />
         <Range
           title="minimum value of elements"
           icon="angle-down"
-          values={[{ title: "0" }]}
+          values={MIN}
           index={0}
           setIndex={() => {}}
         />
         <Range
           title="maximum value of elements"
           icon="angle-up"
-          values={[{ title: "50" }]}
+          values={MAX}
           index={0}
           setIndex={() => {}}
         />
