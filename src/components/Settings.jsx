@@ -1,5 +1,6 @@
 import { useContext } from "react";
 
+import ALGORITHM from "../data/algorithm";
 import SPEED from "../data/speed";
 import LENGTH from "../data/length";
 import MIN from "../data/min";
@@ -29,9 +30,9 @@ const Settings = () => {
         <Range
           title="algorithm"
           icon="microchip"
-          values={[{ title: "selection sort" }]}
-          index={0}
-          setIndex={() => {}}
+          values={ALGORITHM}
+          index={index.algorithm}
+          setIndex={indexHandler.algorithm}
         />
         <Range
           title="speed"

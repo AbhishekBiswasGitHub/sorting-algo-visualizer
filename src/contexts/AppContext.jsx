@@ -9,6 +9,7 @@ import {
 import PropTypes from "prop-types";
 
 // statics
+import ALGORITHM from "../data/algorithm";
 import SPEED from "../data/speed";
 import LENGTH from "../data/length";
 import MIN from "../data/min";
@@ -25,12 +26,17 @@ const AppContextProvider = ({ children }) => {
   // states
 
   // settings states
+  const [algorithmIndex, setAlgorithmIndex] =
+    useState(0);
   const [speedIndex, setSpeedIndex] = useState(3);
   const [lengthIndex, setLengthIndex] =
     useState(6);
   const [minIndex, setMinIndex] = useState(1);
   const [maxIndex, setMaxIndex] = useState(10);
 
+  const [algorithm, setAlgorithm] = useState(
+    ALGORITHM[algorithmIndex].value
+  );
   const [speed, setSpeed] = useState(
     SPEED[speedIndex].value
   );
@@ -55,7 +61,12 @@ const AppContextProvider = ({ children }) => {
 
   // settings handlers
 
-  // TODO: set algorithm index if in range
+  // set algorithm index if in range
+  const updateAlgorithmIndex = (index) => {
+    if (index >= 0 && index < ALGORITHM.length) {
+      setAlgorithmIndex(() => index);
+    }
+  };
 
   // set speed index if in range
   const updateSpeedIndex = (index) => {
@@ -100,7 +111,12 @@ const AppContextProvider = ({ children }) => {
     );
   };
 
-  // TODO: set algorithm when algorithm index changes
+  // set algorithm when algorithm index changes
+  useEffect(() => {
+    setAlgorithm(
+      () => ALGORITHM[algorithmIndex].value
+    );
+  }, [algorithmIndex]);
 
   // set speed when speed index changes
   useEffect(() => {
@@ -141,16 +157,10 @@ const AppContextProvider = ({ children }) => {
     resetSortedPrimary();
   };
 
-  // generate unsorted primary array, renders array
+  // generate unsorted primary array
   const shuffle = () => {
     generateUnsortedPrimary();
   };
-
-  // generate unsorted primary array
-  // when length / min / max changes
-  useEffect(() => {
-    generateUnsortedPrimary();
-  }, [length, min, max]);
 
   // update sorted primary array
   // when unsorted primary array changes
@@ -158,26 +168,38 @@ const AppContextProvider = ({ children }) => {
     resetSortedPrimary();
   }, [unsortedPrimary]);
 
+  // reset sorted primary array
+  // when algorithm changes
+  useEffect(() => {
+    resetSortedPrimary();
+  }, [algorithm]);
+
+  // generate unsorted primary array
+  // when length / min / max changes
+  useEffect(() => {
+    shuffle();
+  }, [length, min, max]);
+
   return (
     <AppContext.Provider
       value={{
         settings: {
           index: {
-            // TODO: algorithm
+            algorithm: algorithmIndex,
             speed: speedIndex,
             length: lengthIndex,
             min: minIndex,
             max: maxIndex,
           },
           indexHandler: {
-            // TODO: algorithm
+            algorithm: updateAlgorithmIndex,
             speed: updateSpeedIndex,
             length: updateLengthIndex,
             min: updateMinIndex,
             max: updateMaxIndex,
           },
           value: {
-            // TODO: algorithm
+            algorithm,
             speed,
             length,
             min,
