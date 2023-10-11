@@ -15,7 +15,8 @@ const App = () => {
   const { settings, render } =
     useContext(AppContext);
   const { min, max } = settings.value;
-  const { sortedPrimary } = render.value;
+  const { sortedPrimary, progress } =
+    render.value;
 
   return (
     <div id="App">
@@ -27,7 +28,7 @@ const App = () => {
         max={max}
         array={sortedPrimary}
       />
-      <ProgressBar progress={50} />
+      <ProgressBar progress={progress} />
       <Controls />
     </div>
   );

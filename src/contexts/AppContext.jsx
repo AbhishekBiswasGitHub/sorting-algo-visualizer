@@ -61,6 +61,7 @@ const AppContextProvider = ({ children }) => {
   const [isRendering, setIsRendering] =
     useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [isSorted, setIsSorted] = useState(false);
   const [unsortedPrimary, setUnsortedPrimary] =
     useState([]);
   const [sortedPrimary, setSortedPrimary] =
@@ -68,6 +69,7 @@ const AppContextProvider = ({ children }) => {
   const [renders, setRenders] = useState([]);
   const [renderIndex, setRenderIndex] =
     useState(0);
+  const [progress, setProgress] = useState(0);
 
   // settings handlers
 
@@ -154,7 +156,9 @@ const AppContextProvider = ({ children }) => {
   const resetFlags = () => {
     setIsRendering(() => false);
     setIsPaused(() => false);
+    setIsSorted(() => false);
     setRenderIndex(() => 0);
+    setProgress(() => 0);
   };
 
   // generate unsorted primary array
@@ -183,7 +187,9 @@ const AppContextProvider = ({ children }) => {
   const sort = () => {
     if (!isRendering) {
       if (!isPaused) {
+        setIsSorted(() => false);
         setRenderIndex(() => 0);
+        setProgress(() => 0);
       }
 
       setIsRendering(true);
@@ -204,6 +210,18 @@ const AppContextProvider = ({ children }) => {
   const shuffle = () => {
     resetFlags();
     generateUnsortedPrimary();
+  };
+
+  // generate current progress percentage
+  const generateProgress = () => {
+    setProgress(
+      isSorted
+        ? 100
+        : (
+            (100 * renderIndex) /
+            renders.length
+          ).toFixed(2)
+    );
   };
 
   // update sorted primary array &
@@ -238,6 +256,8 @@ const AppContextProvider = ({ children }) => {
         await (async () => {
           if (renderIndex === 0) {
             setIsPaused(() => false);
+            setIsSorted(() => false);
+            setProgress(() => 0);
             resetSortedPrimary();
 
             await new Promise((promise) =>
@@ -264,11 +284,17 @@ const AppContextProvider = ({ children }) => {
           );
         } else {
           setIsRendering(false);
+          setIsSorted(true);
           setRenderIndex(0);
         }
       }
     })();
   }, [isRendering, renderIndex]);
+
+  // generate progress when rendering index count changes
+  useEffect(() => {
+    generateProgress();
+  }, [renderIndex]);
 
   return (
     <AppContext.Provider
@@ -304,6 +330,7 @@ const AppContextProvider = ({ children }) => {
           value: {
             isRendering,
             sortedPrimary,
+            progress,
           },
           handler: {
             reset,
