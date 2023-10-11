@@ -1,13 +1,21 @@
+import { useContext } from "react";
+
 import SPEED from "../data/speed";
 import LENGTH from "../data/length";
 import MIN from "../data/min";
 import MAX from "../data/max";
+
+import { AppContext } from "../contexts/AppContext";
 
 import Range from "./Range";
 
 import styles from "./settings.module.css";
 
 const Settings = () => {
+  const {
+    settings: { index, indexHandler },
+  } = useContext(AppContext);
+
   return (
     <div className={styles.container}>
       <div className={styles.settings}>
@@ -22,29 +30,29 @@ const Settings = () => {
           title="speed"
           icon="gauge-simple-high"
           values={SPEED}
-          index={0}
-          setIndex={() => {}}
+          index={index.speed}
+          setIndex={indexHandler.speed}
         />
         <Range
           title="number of elements"
           icon="bars"
           values={LENGTH}
-          index={0}
-          setIndex={() => {}}
+          index={index.length}
+          setIndex={indexHandler.length}
         />
         <Range
           title="minimum value of elements"
           icon="angle-down"
           values={MIN}
-          index={0}
-          setIndex={() => {}}
+          index={index.min}
+          setIndex={indexHandler.min}
         />
         <Range
           title="maximum value of elements"
           icon="angle-up"
           values={MAX}
-          index={0}
-          setIndex={() => {}}
+          index={index.max}
+          setIndex={indexHandler.max}
         />
       </div>
     </div>
