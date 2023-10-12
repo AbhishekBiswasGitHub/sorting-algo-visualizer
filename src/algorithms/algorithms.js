@@ -7,6 +7,7 @@ import shellSort from "./shellSort";
 import bubbleSort from "./bubbleSort";
 import shakerSort from "./shakerSort";
 import combSort from "./combSort";
+import quickSort from "./quickSort";
 import mergeSort from "./mergeSort";
 
 const algorithms = {
@@ -19,6 +20,7 @@ const algorithms = {
   bubbleSort,
   shakerSort,
   combSort,
+  quickSort,
   mergeSort,
 };
 

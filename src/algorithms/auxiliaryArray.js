@@ -10,6 +10,7 @@ export default (primary) => ({
   bubbleSort: () => [],
   shakerSort: () => [],
   combSort: () => [],
+  quickSort: () => [],
   mergeSort: () =>
     generateUnsortedArray(primary.length, 0, 0),
 });
