@@ -3,6 +3,7 @@ import doubleSelectionSort from "./doubleSelectionSort";
 import heapSort from "./heapSort";
 import insertionSort from "./insertionSort";
 import binaryInsertionSort from "./binaryInsertionSort";
+import shellSort from "./shellSort";
 import mergeSort from "./mergeSort";
 
 const algorithms = {
@@ -11,6 +12,7 @@ const algorithms = {
   heapSort,
   insertionSort,
   binaryInsertionSort,
+  shellSort,
   mergeSort,
 };
 
