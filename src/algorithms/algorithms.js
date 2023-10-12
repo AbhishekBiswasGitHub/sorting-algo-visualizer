@@ -6,6 +6,7 @@ import binaryInsertionSort from "./binaryInsertionSort";
 import shellSort from "./shellSort";
 import bubbleSort from "./bubbleSort";
 import shakerSort from "./shakerSort";
+import combSort from "./combSort";
 import mergeSort from "./mergeSort";
 
 const algorithms = {
@@ -17,6 +18,7 @@ const algorithms = {
   shellSort,
   bubbleSort,
   shakerSort,
+  combSort,
   mergeSort,
 };
 

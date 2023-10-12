@@ -9,6 +9,7 @@ export default (primary) => ({
   shellSort: () => [],
   bubbleSort: () => [],
   shakerSort: () => [],
+  combSort: () => [],
   mergeSort: () =>
     generateUnsortedArray(primary.length, 0, 0),
 });
