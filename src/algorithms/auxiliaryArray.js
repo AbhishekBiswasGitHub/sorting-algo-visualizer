@@ -5,6 +5,7 @@ export default (primary) => ({
   doubleSelectionSort: () => [],
   heapSort: () => [],
   insertionSort: () => [],
+  binaryInsertionSort: () => [],
   mergeSort: () =>
     generateUnsortedArray(primary.length, 0, 0),
 });
