@@ -7,6 +7,7 @@ export default (primary) => ({
   insertionSort: () => [],
   binaryInsertionSort: () => [],
   shellSort: () => [],
+  bubbleSort: () => [],
   mergeSort: () =>
     generateUnsortedArray(primary.length, 0, 0),
 });
