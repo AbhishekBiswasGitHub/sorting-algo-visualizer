@@ -6,7 +6,7 @@ Explore and visualize various sorting algorithms interactively with this web-bas
 
 ## Live Demo
 
-🚀 Check out the live demo: [Sorting Algorithm Visualizer](https://best-sorting-algorithm-visualizer.netlify.app/)
+🚀 Check out the live demo: [Sorting Algorithm Visualizer](https://viz-sorting-algo.netlify.app/)
 
 ## Features
 
