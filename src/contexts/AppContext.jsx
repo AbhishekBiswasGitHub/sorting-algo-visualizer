@@ -59,6 +59,10 @@ const AppContextProvider = ({ children }) => {
     useState(false);
   const [isFullScreen, setIsFullScreen] =
     useState(false);
+  const [
+    isLoopingRandomly,
+    setIsLoopingRandomly,
+  ] = useState(false);
 
   // render states
   const [isRendering, setIsRendering] =
@@ -86,6 +90,7 @@ const AppContextProvider = ({ children }) => {
   // set algorithm index if in range
   const updateAlgorithmIndex = (index) => {
     if (index >= 0 && index < ALGORITHM.length) {
+      setIsLoopingRandomly(() => false);
       setAlgorithmIndex(() => index);
     }
   };
@@ -171,6 +176,15 @@ const AppContextProvider = ({ children }) => {
     setIsFullScreen(
       (prevIsFullScreen) => !prevIsFullScreen
     );
+  };
+
+  // toggle looping
+  const toggleLoopingRandomly = () => {
+    setIsLoopingRandomly(
+      (prevIsLoopingRandomly) =>
+        !prevIsLoopingRandomly
+    );
+    setShowSettings(false);
   };
 
   // set algorithm when algorithm index changes
@@ -301,6 +315,7 @@ const AppContextProvider = ({ children }) => {
 
   // reset flags, sorted primary array, sorted auxiliary array
   const reset = () => {
+    setIsLoopingRandomly(() => false);
     resetFlags();
     resetSortedPrimary();
     resetSortedAuxiliary();
@@ -308,6 +323,7 @@ const AppContextProvider = ({ children }) => {
 
   // generate unsorted primary array, renders array
   const shuffle = () => {
+    setIsLoopingRandomly(() => false);
     resetFlags();
     generateUnsortedPrimary();
   };
@@ -360,17 +376,10 @@ const AppContextProvider = ({ children }) => {
   // generate unsorted auxiliary array, renders array
   // when algorithm changes
   useEffect(() => {
-    (async () => {
-      resetFlags();
-      generateUnsortedAuxiliary();
-      generateRenders();
-
-      await new Promise((promise) =>
-        setTimeout(promise, 1)
-      );
-
-      resetSortedPrimary();
-    })();
+    resetFlags();
+    generateUnsortedAuxiliary();
+    generateRenders();
+    resetSortedPrimary();
   }, [algorithm]);
 
   // generate unsorted primary array
@@ -429,6 +438,43 @@ const AppContextProvider = ({ children }) => {
     generateProgress();
   }, [renderIndex]);
 
+  // run continuous sorting with random algorithm
+  useEffect(() => {
+    (async () => {
+      if (isLoopingRandomly) {
+        if (isSorted) {
+          await (async () => {
+            generateUnsortedPrimary();
+            setAlgorithmIndex(() =>
+              Math.floor(
+                Math.random() * ALGORITHM.length
+              )
+            );
+
+            await new Promise((promise) =>
+              setTimeout(promise, 100)
+            );
+          })();
+        }
+        await (async () => {
+          setIsRendering(() => true);
+
+          await new Promise((promise) =>
+            setTimeout(promise, 100)
+          );
+        })();
+      } else if (!isSorted && renderIndex !== 0) {
+        await (async () => {
+          reset();
+
+          await new Promise((promise) =>
+            setTimeout(promise, 1000)
+          );
+        })();
+      }
+    })();
+  }, [isLoopingRandomly, isSorted]);
+
   return (
     <AppContext.Provider
       value={{
@@ -455,10 +501,12 @@ const AppContextProvider = ({ children }) => {
             max,
             showSettings,
             isFullScreen,
+            isLoopingRandomly,
           },
           handler: {
             toggleShowSettings,
             toggleFullScreen,
+            toggleLoopingRandomly,
           },
         },
         render: {
