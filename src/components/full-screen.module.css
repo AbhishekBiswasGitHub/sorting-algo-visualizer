@@ -1,0 +1,17 @@
+.container {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+
+  font-size: 2rem;
+
+  opacity: 0.5;
+  z-index: 2;
+  cursor: pointer;
+}
+
+.container:hover {
+  color: #ccc;
+
+  opacity: 1;
+}

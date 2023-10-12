@@ -9,11 +9,13 @@ import ProgressBar from "./components/ProgressBar";
 import Controls from "./components/Controls";
 
 import "./App.css";
+import FullScreen from "./components/FullScreen";
 
 const App = () => {
   return (
     <div id="App">
       <AppContextProvider>
+        <FullScreen />
         <ColorCodeInfo />
         <Settings />
         <Title />

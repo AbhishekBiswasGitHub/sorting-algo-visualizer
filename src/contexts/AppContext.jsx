@@ -57,6 +57,8 @@ const AppContextProvider = ({ children }) => {
 
   const [showSettings, setShowSettings] =
     useState(false);
+  const [isFullScreen, setIsFullScreen] =
+    useState(false);
 
   // render states
   const [isRendering, setIsRendering] =
@@ -131,6 +133,46 @@ const AppContextProvider = ({ children }) => {
     );
   };
 
+  // toggle fullscreen
+  const toggleFullScreen = () => {
+    if (!isFullScreen) {
+      if (
+        document.documentElement.requestFullscreen
+      ) {
+        document.documentElement.requestFullscreen();
+      } else if (
+        document.documentElement
+          .mozRequestFullScreen
+      ) {
+        document.documentElement.mozRequestFullScreen();
+      } else if (
+        document.documentElement
+          .webkitRequestFullscreen
+      ) {
+        document.documentElement.webkitRequestFullscreen();
+      } else if (
+        document.documentElement
+          .msRequestFullscreen
+      ) {
+        document.documentElement.msRequestFullscreen();
+      }
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+      }
+    }
+
+    setIsFullScreen(
+      (prevIsFullScreen) => !prevIsFullScreen
+    );
+  };
+
   // set algorithm when algorithm index changes
   useEffect(() => {
     setAlgorithm(
@@ -157,6 +199,55 @@ const AppContextProvider = ({ children }) => {
   useEffect(() => {
     setMax(() => MAX[maxIndex].value);
   }, [maxIndex]);
+
+  // set isFullScreen when fullscreen changes
+  useEffect(() => {
+    const fullscreenChangeHandler = () => {
+      setIsFullScreen(
+        document.fullscreenElement ||
+          document.mozFullScreenElement ||
+          document.webkitFullscreenElement ||
+          document.msFullscreenElement
+      );
+    };
+
+    document.addEventListener(
+      "fullscreenchange",
+      fullscreenChangeHandler
+    );
+    document.addEventListener(
+      "mozfullscreenchange",
+      fullscreenChangeHandler
+    );
+    document.addEventListener(
+      "webkitfullscreenchange",
+      fullscreenChangeHandler
+    );
+    document.addEventListener(
+      "MSFullscreenChange",
+      fullscreenChangeHandler
+    );
+
+    // Clean up event listeners when the component unmounts
+    return () => {
+      document.removeEventListener(
+        "fullscreenchange",
+        fullscreenChangeHandler
+      );
+      document.removeEventListener(
+        "mozfullscreenchange",
+        fullscreenChangeHandler
+      );
+      document.removeEventListener(
+        "webkitfullscreenchange",
+        fullscreenChangeHandler
+      );
+      document.removeEventListener(
+        "MSFullscreenChange",
+        fullscreenChangeHandler
+      );
+    };
+  }, []);
 
   // render handlers
 
@@ -363,9 +454,11 @@ const AppContextProvider = ({ children }) => {
             min,
             max,
             showSettings,
+            isFullScreen,
           },
           handler: {
             toggleShowSettings,
+            toggleFullScreen,
           },
         },
         render: {
