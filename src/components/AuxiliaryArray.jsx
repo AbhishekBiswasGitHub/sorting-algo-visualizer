@@ -5,16 +5,20 @@ import ArrayViz from "./ArrayViz";
 const AuxiliaryArray = () => {
   const {
     settings: {
-      value: { min, max },
+      value: { algorithm, min, max },
     },
     render: {
-      value: { sortedAuxiliary },
+      value: { sortedPrimary, sortedAuxiliary },
     },
   } = useContext(AppContext);
   return sortedAuxiliary.length ? (
     <ArrayViz
-      min={min}
-      max={max}
+      min={algorithm === "countingSort" ? 0 : min}
+      max={
+        algorithm === "countingSort"
+          ? Math.floor(sortedPrimary.length / 1.5)
+          : max
+      }
       array={sortedAuxiliary}
     />
   ) : (

@@ -9,6 +9,7 @@ import shakerSort from "./shakerSort";
 import combSort from "./combSort";
 import quickSort from "./quickSort";
 import mergeSort from "./mergeSort";
+import countingSort from "./countingSort";
 
 const algorithms = {
   selectionSort,
@@ -22,6 +23,7 @@ const algorithms = {
   combSort,
   quickSort,
   mergeSort,
+  countingSort,
 };
 
 export default algorithms;
